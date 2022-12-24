@@ -1,6 +1,5 @@
 from src import *
 import sys
-import logging
 
 
 def main():
@@ -12,7 +11,5 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    logging.info("Starting App"
-                 "")
+    logger.info("Starting App")
     main()

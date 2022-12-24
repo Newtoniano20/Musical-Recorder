@@ -2,7 +2,9 @@ import pyaudio
 import numpy as np
 import scipy as sp
 import time
-import logging
+from .MainWindow import *
+from scipy.signal import windows
+
 
 class MicrophoneHandler:
     def __init__(self, channel=1, rate=48000, chunk=2048):
@@ -15,7 +17,7 @@ class MicrophoneHandler:
     def fourier(self, data):
         yf = sp.fft.fft(data)/self.RATE
         xf = sp.fft.fftfreq(self.CHUNK, 1 / self.RATE)
-        # logging.info(f"xf: {len(xf)}, yf: {len(yf)}")
+        # logger.info(f"xf: {len(xf)}, yf: {len(yf)}")
         return np.abs(xf), np.abs(yf)
 
     def read_stream(self):
