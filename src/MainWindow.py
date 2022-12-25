@@ -80,8 +80,9 @@ class MainWindow(QtWidgets.QMainWindow):
         event.accept()
 
     def update(self):
+        self.mic.database_init()
         while not self.stop:
-            start_time = time.time()
+            # start_time = time.time()
 
             self.y = self.mic.read_stream()
             # logger.info(f"Read Data from Microphone")
@@ -98,6 +99,7 @@ class MainWindow(QtWidgets.QMainWindow):
             # Trigger the canvas to update and redraw.
             self.graphWidget.draw()
             # logger.info(f"Plot Drawn")
+            self.mic.save_state(self.max_frequency)
             if self.max_frequency > self.freq[-1]:
                 logger.warning(f"Max frequency exceeded")
                 self.note_box.setText(str(self.max_frequency) + "hz")
@@ -122,3 +124,4 @@ class MainWindow(QtWidgets.QMainWindow):
                         pass
                 # logger.info(f"Time Spent Update Function: {time.time() - start_time}")
                 time.sleep(0.05)
+        self.mic.close()
