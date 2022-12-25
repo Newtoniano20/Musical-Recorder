@@ -26,7 +26,7 @@ class MicrophoneHandler:
         self.cursor = self.db.cursor()
         now = datetime.datetime.now()
         self.table_name = "table_{}_{}_{}_{}_{}_{}".format(now.year, now.month, now.day, now.hour, now.minute, now.second)
-        self.cursor.execute(f"CREATE TABLE {self.table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, frequency FLOAT, timestamp FLOAT);")
+        self.cursor.execute(f"CREATE TABLE {self.table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, frequency FLOAT , power FLOAT, noise FLOAT, timestamp FLOAT);")
         self.db.commit()
 
     def fourier(self, data):
@@ -35,12 +35,20 @@ class MicrophoneHandler:
         # logger.info(f"xf: {len(xf)}, yf: {len(yf)}")
         return np.abs(xf), np.abs(yf)
 
+    @staticmethod
+    def fourier_frequency(y, x):
+        max_value_index = np.argmax(y)
+        return x[max_value_index], max_value_index
+
     def read_stream(self):
         data = self.mic.read(self.CHUNK)
         return np.frombuffer(data, dtype=np.int16)
 
-    def save_state(self, freq):
-        self.cursor.execute(f'INSERT INTO {self.table_name} (frequency, timestamp) VALUES ({freq}, {time.time()})')
+    def save_state(self, y, x):
+        freq, max_value_index = self.fourier_frequency(y, x)
+        power = y[max_value_index]
+        noise = sum(y)
+        self.cursor.execute(f'INSERT INTO {self.table_name} (frequency, timestamp, power, noise) VALUES ({freq}, {time.time()}, {power}, {noise})')
         self.db.commit()
 
     def close(self):

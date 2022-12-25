@@ -90,8 +90,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.xdata, self.y = self.mic.fourier(self.y)
             # logger.info(f"Fourier Transform Applied")
 
-            self.max_value_index = np.argmax(self.y)
-            self.max_frequency = self.xdata[self.max_value_index]
+            self.max_frequency, self.max_value_index = self.mic.fourier_frequency(x=self.xdata, y=self.y)
             self.graphWidget.axes.cla()  # Clear the canvas.
             self.graphWidget.axes.plot(self.xdata, self.y, 'r')
             # logger.info(f"Plot Configured and Ready")
@@ -99,7 +98,7 @@ class MainWindow(QtWidgets.QMainWindow):
             # Trigger the canvas to update and redraw.
             self.graphWidget.draw()
             # logger.info(f"Plot Drawn")
-            self.mic.save_state(self.max_frequency)
+            self.mic.save_state(y=self.y, x=self.xdata)
             if self.max_frequency > self.freq[-1]:
                 logger.warning(f"Max frequency exceeded")
                 self.note_box.setText(str(self.max_frequency) + "hz")
