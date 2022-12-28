@@ -2,14 +2,14 @@ import sqlite3 as sq
 import matplotlib.pyplot as plt
 import numpy as np
 
-database_name = "table_2022_12_25_13_55_28"
+table_name = "table_2022_12_26_20_30_43"
 
 y = []
 x = []
 
 db = sq.connect('../state.db')
 cursor = db.cursor()
-cursor.execute(f'SELECT * FROM {database_name}')
+cursor.execute(f'SELECT * FROM {table_name}')
 rows = cursor.fetchall()
 initial_time = rows[0][4]
 print(rows)
