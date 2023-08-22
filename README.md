@@ -1,5 +1,5 @@
 # Musical Recorder
-#### Video Demo:  [<URL HERE>](https://www.youtube.com/watch?v=q1w0orRkyzM)
+#### Video Demo:  https://www.youtube.com/watch?v=q1w0orRkyzM
 #### Description: 
 This app will allow you to record yourself, but instead of saving everything your mic picks up as a normal recorder, it will only save the most prevalent frequency at a given time.
 
